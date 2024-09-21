@@ -3,42 +3,8 @@ import java.util.ArrayList;
 
 public class Main {
 
-    private static final ArrayList<Block> blockchain = new ArrayList<>();
-    private static final int difficulty = 5;
-
-    private static boolean isBlockchainValid() {
-        if (!blockchain.isEmpty()) {
-            for (int i = 0; i < blockchain.size(); i++) {
-                Block block = blockchain.get(i);
-                String expectedHash = Hasher.calculateHash(block.getPreviousHash(), block.getTransaction(),
-                        block.getNonce());
-                // has valid hash
-                if (!expectedHash.equals(block.getHash())) {
-                    System.out.println("Block has invalid hash.");
-                    return false;
-                }
-                // block was mined/solved
-                String hashTarget = new String(new char[difficulty]).replace('\0', '0');
-                if (!block.getHash().substring(0, difficulty).equals(hashTarget)) {
-                    System.out.println("Block wasn't mined.");
-                    return false;
-                }
-                // for every block except the first compare previousHash
-                if (i > 0) {
-                    Block previousBlock = blockchain.get(i - 1);
-                    if (!block.getPreviousHash().equals(previousBlock.getHash())) {
-                        System.out.println("Block has invalid previousHash.");
-                        return false;
-                    }
-                }
-            }
-        } else {
-            System.out.println("Blockchain is empty.");
-            return true;
-        }
-
-        return true;
-    }
+    public static final ArrayList<Block> blockchain = new ArrayList<>();
+    public static final int difficulty = 5;
 
     public static void main(String[] args) {
 
@@ -72,7 +38,7 @@ public class Main {
         // test of correctness
         //secondBlock.setTransaction("Bonnie pays Caroline 5CC");
 
-        System.out.println("Is blockchain valid? " + isBlockchainValid());
+        System.out.println("Is blockchain valid? " + Blockchain.isBlockchainValid());
     }
 
 }
